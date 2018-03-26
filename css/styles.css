@@ -1,0 +1,84 @@
+* {
+	font-family: "Helvetica Neue Light", Roboto, Helvetica, Arial, sans-serif;
+	font-weight: 500;
+	color: #000000;
+}
+
+h1 {
+	font-family: "Helvetica Neue Light", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 20px;
+	color: #ffffff;
+	line-height: 25px;
+	font-weight: 400;
+}
+
+h2 {
+	font-family: "Helvetica Neue Light", Roboto, Helvetica, Arial, sans-serif;
+	color: #ff0000;
+	font-weight: 300;
+	font-size:15px
+}
+
+a {
+ 	font-size: 14px;
+ 	color: #0093B9;
+ 	line-height: 17px;
+}
+
+
+body {
+	background-color: #D3D3D3;
+}
+
+#map {
+  height: 100%;
+}
+
+.container {
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  max-width:100%;
+}
+
+.map-container {
+  height: 100%;
+  background-color: white;
+  min-height: 100px;
+  padding: 0 0 0 0;
+}
+
+.side-container {
+  box-shadow: -5px 0 8px rgba(0, 0, 0, 0.26);
+  height: 100%;
+  background-color: #D3D3D3;
+  min-height: 100px;
+  padding: 0 0 0 0;
+}
+
+.app-title {
+  min-height: 50px;
+	background-color: #082d68;
+  width: 100%;
+  margin:0 0 0 0;
+  padding-left: 15px;
+}
+
+.title {
+	color: #082d68;
+	font-weight: bolder;
+}
+
+.center-vertical {
+	align-items: center;
+}
+
+.no-margin {
+  margin:0 0 0 0;
+}
+
+.flex {
+	display: flex;
+}

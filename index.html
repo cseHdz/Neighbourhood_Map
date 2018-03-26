@@ -4,11 +4,26 @@
       <meta charset="UTF-8" />
       <meta name="google" content="notranslate" />
       <meta http-equiv="Content-Language" content="en_US" />
+      <meta name="viewport" content="width=device-width,initial-scale=1">
       <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <title>Neighbourhood Map</title>
-        <link rel="stylesheet" href="css/style.css">
+      <title>Neighbourhood Map</title>
+      <link rel="stylesheet" href="css/styles.css">
     </head>
     <body>
+      <div class="col-md-12 container flex">
+        <div class="col-md-9 map-container">
+          <div id="map"></div>
+        </div>
+        <div class="col-md-3 side-container">
+          <div class="row app-title center-vertical">
+    				<h1 class="no-margin">Toronto's Neighbourhood Map</h1>
+    			</div>
+        </div>
+      </div>
+      <script src="js/script.js"></script>
+      <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcfl-C3B0IlvWv0uume7knkLCp2W1-Juo&v=3&callback=initMap">
+      </script>
     </body>
 </html>

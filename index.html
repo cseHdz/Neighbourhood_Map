@@ -7,8 +7,8 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-      <title>Neighbourhood Map</title>
       <link rel="stylesheet" href="css/styles.css">
+      <title>Neighbourhood Map</title>
     </head>
     <body>
       <div class="col-md-12 container flex">
@@ -18,10 +18,17 @@
         <div class="col-md-3 side-container">
           <div class="row app-title center-vertical">
     				<h1 class="no-margin">Toronto's Neighbourhood Map</h1>
-    			</div>
+          </div>
+          <div class="row list-container flex">
+            <h2 class="no-margin padding-left padding-top">Favorite Locations</h2>
+          </div>
+          <div class="row flex center buttons-container">
+            <button id="show-markers" type="button" class="btn btn-primary btn-sm">Show Locations</button>
+            <button id="hide-markers" type="button" class="btn btn-secondary btn-sm margin-left">Hide Locations</button>
+          </div>
         </div>
       </div>
-      <script src="js/script.js"></script>
+      <script src="js/g_maps_script.js"></script>
       <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcfl-C3B0IlvWv0uume7knkLCp2W1-Juo&v=3&callback=initMap">
       </script>

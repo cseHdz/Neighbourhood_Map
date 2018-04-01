@@ -15,20 +15,22 @@ var initialMarkers = [
 
 var map;
 
+// Define the icons for the markers.
+var iconBase = 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/32/';
+var icons = {
+  default: {
+    icon: iconBase + 'Map-Marker-Marker-Outside-Azure-icon.png'
+  },
+  highlighted: {
+    icon: iconBase + 'Map-Marker-Marker-Outside-Chartreuse-icon.png'
+  }
+};
+
 // Empty array for all markers.
 var markers = [];
 
+var largeInfowindow;
 function initMap() {
-
-  var iconBase = 'http://icons.iconarchive.com/icons/icons-land/vista-map-markers/32/';
-  var icons = {
-    default: {
-      icon: iconBase + 'Map-Marker-Marker-Outside-Azure-icon.png'
-    },
-    highlighted: {
-      icon: iconBase + 'Map-Marker-Marker-Outside-Chartreuse-icon.png'
-    }
-  };
 
   // Create new map centered around Toronto ON
   map = new google.maps.Map(document.getElementById('map'), {
@@ -37,7 +39,7 @@ function initMap() {
   });
 
   // InfoWindow to display marker details
-  var largeInfowindow = new google.maps.InfoWindow();
+  largeInfowindow = new google.maps.InfoWindow();
 
   // Initialize the locations for Neighbourhood.
   for (var i = 0; i < initialMarkers.length; i++) {
@@ -51,6 +53,7 @@ function initMap() {
       title: title,
       animation: google.maps.Animation.DROP,
       icon: icons['default'].icon,
+      map: map,
       id: i
     });
     // Push the marker into the markers array.
@@ -68,7 +71,7 @@ function initMap() {
 
     // Revert a marker to it's original status
     gmarker.addListener('mouseout', function() {
-      this.setIcon(icons['default'].icon);
+        this.setIcon(icons['default'].icon);
     });
   }
 
@@ -79,37 +82,97 @@ function initMap() {
   document.getElementById('hide-markers').addEventListener('click', function(){
       toggleMarkers('hide');
   });
+
+  document.getElementById('map-filter').addEventListener('click', function(){
+      filterMarkers();
+  });
 }
 
 // Create an infoWindow to display the details of the marker
 function populateInfoWindow(gmarker, infowindow) {
+
   // Check if infowindow is already open for this marker. Allow only one infowindow at a time.
   if (infowindow.gmarker != gmarker) {
+    viewModel = ko.dataFor(list);
+
+    // Only update model once.
+    if (viewModel.currentMarker().title != gmarker.title) {
+      ko.dataFor(list).setCurrentMarker(getGMarker(gmarker));
+    }
     infowindow.gmarker = gmarker;
     infowindow.setContent('<div>' + gmarker.title + '</div>');
     infowindow.open(map, gmarker);
     // Release the infowindow if clicked.
     infowindow.addListener('closeclick', function() {
       infowindow.gmarker = null;
+      ko.dataFor(list).setCurrentMarker('');
     });
-    infowindow.open(map, gmarker);
+  }
+}
+
+// Trigger marker select programmatically
+function selectMarkerFromVM(title){
+  for (var i = 0; i < markers.length; i++) {
+
+    // Display the marker with the title
+    if (markers[i].title != title){
+      markers[i].setIcon(icons['default'].icon);
+    } else {
+      // Make the marker visible on the map if hidden.
+      if (markers[i].map == null){
+        markers[i].setMap(map);
+      }
+      // Highlight the selection.
+      markers[i].setIcon(icons['highlighted'].icon);
+      google.maps.event.trigger(markers[i], 'click');
+    }
   }
 }
 
 // Toggle visibility for all Markers in the Map. Adjust the map to ensure visbility of all markers.
 function toggleMarkers(visibility) {
   var bounds = new google.maps.LatLngBounds();
-
+  if (visibility == 'show'){
+    filterMarkers();
+  }else {
   for (var i = 0; i < markers.length; i++) {
-    if (visibility == 'show'){
-      markers[i].setMap(map);
-      bounds.extend(markers[i].position);
-    } else{
+      // Unhighlight all icons and remove from view.
+      ko.dataFor(list).setCurrentMarker('');
+      markers[i].setIcon(icons['default'].icon);
       markers[i].setMap(null);
     }
   }
+}
 
-  if (visibility == 'show'){
-    map.fitBounds(bounds);
+
+// Filter all items.
+function filterMarkers(){
+  filter = document.getElementById('filter').value;
+  console.log(filter);
+  for (var i = 0; i < markers.length; i++) {
+    var regExp = new RegExp('^' + filter + '');
+    if(!regExp.test(markers[i].title)){
+      markers[i].setMap(null);
+    }else {
+      if (markers[i].map == null){
+        showMarker(filterMarkers);
+      }
+    }
   }
+}
+
+function showMarker(marker){
+  marker.setMap(map);
+  bounds.extend(marker.position);
+}
+
+// Helper function to communicate with View Model.
+function getGMarker(gmarker){
+  return ({
+    title: gmarker.title,
+    location: {
+      lat:gmarker.position.lat(),
+      lng:gmarker.position.lng()
+    }
+  });
 }

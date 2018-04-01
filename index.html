@@ -19,15 +19,29 @@
           <div class="row app-title center-vertical">
     				<h1 class="no-margin">Toronto's Neighbourhood Map</h1>
           </div>
-          <div class="row list-container">
-            <h2 class="no-margin padding-left padding-top">Favorite Locations</h2>
-            <ul class="row list-container" data-bind="foreach: smarkerList">
-              <li databind="text: title, click: $parent.setCurrentMarker"> </li>
+          <div class="row secondary-container">
+            <div class="row search-area padding-top">
+              <input id="filter" type="text" class="form-control search-box"
+                   placeholder ="Search a location" data-bind="textInput: filter"/>
+              <button id="map-filter" class="btn btn-primary">Go</button>
+            </div>
+            <h2 class="no-margin padding-left ">Favourite Locations</h2>
+            <ul id="list" class="row list-container" data-bind="foreach: visibleMarkers">
+              <div id="buttons" class="btn-group-vertical block-view" role="group">
+                <button type="button"
+                        class="btn btn-outline-dark"
+                        data-bind="text: title,
+                                  click: $parent.setCurrentMarker,
+                                  css: $parent.isMarkerSelected($data)"
+                        aria-pressed="true"
+                        checked>
+                </button>
+              </div>
             </ul>
-          </div>
-          <div class="row flex center buttons-container">
-            <button id="show-markers" type="button" class="btn btn-primary btn-sm">Show Locations</button>
-            <button id="hide-markers" type="button" class="btn btn-secondary btn-sm margin-left">Hide Locations</button>
+            <div class="row flex center buttons-container">
+              <button id="show-markers" type="button" class="btn btn-primary btn-sm">Show Locations</button>
+              <button id="hide-markers" type="button" class="btn btn-secondary btn-sm margin-left">Hide Locations</button>
+            </div>
           </div>
         </div>
       </div>

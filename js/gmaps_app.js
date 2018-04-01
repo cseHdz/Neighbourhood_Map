@@ -91,23 +91,53 @@ function initMap() {
 // Create an infoWindow to display the details of the marker
 function populateInfoWindow(gmarker, infowindow) {
 
-  // Check if infowindow is already open for this marker. Allow only one infowindow at a time.
-  if (infowindow.gmarker != gmarker) {
-    viewModel = ko.dataFor(list);
+  var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search='
+                + gmarker.title + '&format=json&callback=wikiCallback';
+  var wikiRequestTimeout = setTimeout(function(){
+      $wikiElem.text("failed to get wikipedia resources");
+  }, 8000);
 
-    // Only update model once.
-    if (viewModel.currentMarker().title != gmarker.title) {
-      ko.dataFor(list).setCurrentMarker(getGMarker(gmarker));
+  $.ajax({
+      url: wikiUrl,
+      dataType: "jsonp",
+      jsonp: "callback",
+      success: function( response ) {
+          var articleList = response[1];
+          var content ='<h3>'+ gmarker.title + '</h3>' +
+                        '<h4 id="wikipedia-header">Relevant Wikipedia Links</h4>' +
+                        '<ul id="wikipedia-links" class="wikipedia-list">';
+
+          for (var i = 0; i < articleList.length; i++) {
+              articleStr = articleList[i];
+              var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+              content = content + '<li><a href="' + url + '">' + articleStr + '</a></li>';
+              console.log(content)
+          };
+
+          // Check if infowindow is already open for this marker. Allow only one infowindow at a time.
+          if (infowindow.gmarker != gmarker) {
+            viewModel = ko.dataFor(list);
+
+            // Only update model once.
+            if (viewModel.currentMarker().title != gmarker.title) {
+              ko.dataFor(list).setCurrentMarker(getGMarker(gmarker));
+            }
+            infowindow.gmarker = gmarker;
+
+            content = content + '</ul>';
+            infowindow.setContent(content);
+            infowindow.open(map, gmarker);
+            // Release the infowindow if clicked.
+            infowindow.addListener('closeclick', function() {
+              infowindow.gmarker = null;
+              gmarker.setIcon(icons['default'].icon);
+              ko.dataFor(list).setCurrentMarker('');
+            });
+
+          clearTimeout(wikiRequestTimeout);
+      }
     }
-    infowindow.gmarker = gmarker;
-    infowindow.setContent('<div>' + gmarker.title + '</div>');
-    infowindow.open(map, gmarker);
-    // Release the infowindow if clicked.
-    infowindow.addListener('closeclick', function() {
-      infowindow.gmarker = null;
-      ko.dataFor(list).setCurrentMarker('');
-    });
-  }
+  });
 }
 
 function toggleMarker(marker, visibility){

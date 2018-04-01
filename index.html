@@ -19,8 +19,11 @@
           <div class="row app-title center-vertical">
     				<h1 class="no-margin">Toronto's Neighbourhood Map</h1>
           </div>
-          <div class="row list-container flex">
+          <div class="row list-container">
             <h2 class="no-margin padding-left padding-top">Favorite Locations</h2>
+            <ul class="row list-container" data-bind="foreach: smarkerList">
+              <li databind="text: title, click: $parent.setCurrentMarker"> </li>
+            </ul>
           </div>
           <div class="row flex center buttons-container">
             <button id="show-markers" type="button" class="btn btn-primary btn-sm">Show Locations</button>
@@ -28,7 +31,9 @@
           </div>
         </div>
       </div>
-      <script src="js/g_maps_script.js"></script>
+      <script src="js/gmaps_app.js"></script>
+      <script src ="node_modules/knockout/build/output/knockout-latest.js"></script>
+      <script src="js/app.js"></script>
       <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcfl-C3B0IlvWv0uume7knkLCp2W1-Juo&v=3&callback=initMap">
       </script>

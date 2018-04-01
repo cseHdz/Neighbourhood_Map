@@ -110,18 +110,26 @@ function populateInfoWindow(gmarker, infowindow) {
   }
 }
 
+function toggleMarker(marker, visibility){
+  var bounds = new google.maps.LatLngBounds();
+  if(marker.map == null && visibility == 'show'){
+    marker.setMap(map);
+    bounds.extend(marker.position);
+  }else if (marker.map != null && visibility == 'hide'){
+    marker.setIcon(icons['default'].icon);
+    marker.setMap(null);
+  }
+}
+
 // Trigger marker select programmatically
 function selectMarkerFromVM(title){
   for (var i = 0; i < markers.length; i++) {
-
     // Display the marker with the title
     if (markers[i].title != title){
       markers[i].setIcon(icons['default'].icon);
     } else {
       // Make the marker visible on the map if hidden.
-      if (markers[i].map == null){
-        markers[i].setMap(map);
-      }
+      toggleMarker(markers[i], 'show');
       // Highlight the selection.
       markers[i].setIcon(icons['highlighted'].icon);
       google.maps.event.trigger(markers[i], 'click');
@@ -131,39 +139,32 @@ function selectMarkerFromVM(title){
 
 // Toggle visibility for all Markers in the Map. Adjust the map to ensure visbility of all markers.
 function toggleMarkers(visibility) {
-  var bounds = new google.maps.LatLngBounds();
   if (visibility == 'show'){
     filterMarkers();
   }else {
-  for (var i = 0; i < markers.length; i++) {
+    ko.dataFor(list).setCurrentMarker('');
+    for (var i = 0; i < markers.length; i++) {
       // Unhighlight all icons and remove from view.
-      ko.dataFor(list).setCurrentMarker('');
-      markers[i].setIcon(icons['default'].icon);
-      markers[i].setMap(null);
+      toggleMarker(markers[i],'hide');
     }
   }
 }
-
 
 // Filter all items.
 function filterMarkers(){
   filter = document.getElementById('filter').value;
-  console.log(filter);
+  var regExp = new RegExp('^' + filter + '');
+
   for (var i = 0; i < markers.length; i++) {
-    var regExp = new RegExp('^' + filter + '');
-    if(!regExp.test(markers[i].title)){
-      markers[i].setMap(null);
-    }else {
-      if (markers[i].map == null){
-        showMarker(filterMarkers);
+    if (filter && filter != "None" && !regExp.test(markers[i].title)){
+      if(markers[i].title == ko.dataFor(list).currentMarker().title){
+        ko.dataFor(list).setCurrentMarker('');
       }
+      toggleMarker(markers[i],'hide');
+    }else {
+      toggleMarker(markers[i],'show');
     }
   }
-}
-
-function showMarker(marker){
-  marker.setMap(map);
-  bounds.extend(marker.position);
 }
 
 // Helper function to communicate with View Model.

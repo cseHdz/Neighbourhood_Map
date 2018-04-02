@@ -1,5 +1,5 @@
 # Neighbourhood Map App
-This project contains the project for Udacity Project 4
+This project contains the file for Udacity Neighbourhood Map Project.
 
 To run the application, open `index.html` on a browser.
 

@@ -9,6 +9,7 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src ="node_modules/knockout/build/output/knockout-latest.js"></script>
       <link rel="stylesheet" href="css/styles.css">
       <title>Neighbourhood Map</title>
     </head>
@@ -24,10 +25,12 @@
           <div class="row secondary-container">
             <div class="row search-area padding-top">
               <input id="filter" type="text" class="form-control search-box"
-                   placeholder ="Search a location" data-bind="textInput: filter"/>
+                   placeholder ="e.g. CN Tower" data-bind="textInput: filter"/>
               <button id="map-filter" class="btn btn-outline-dark">
                 <i class="fa fa-filter"></i>
               </button>
+              <pre> Search all locations starting with </pre>
+              <pre class="red" data-bind="text: filter"> </pre>
             </div>
             <h2 class="no-margin padding-left ">Favourite Locations</h2>
             <ul id="list" class="row list-container" data-bind="foreach: visibleMarkers">
@@ -49,8 +52,11 @@
           </div>
         </div>
       </div>
+      <script>window.onerror = function(e){
+        alert('The following error occurred' + e);
+        $("#map").css("display", "none");
+      }</script>
       <script src="js/gmaps_app.js"></script>
-      <script src ="node_modules/knockout/build/output/knockout-latest.js"></script>
       <script src="js/app.js"></script>
       <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcfl-C3B0IlvWv0uume7knkLCp2W1-Juo&v=3&callback=initMap">

@@ -39,6 +39,10 @@ a {
  	line-height: 17px;
 }
 
+p, pre, span {
+	font-size: 10px;
+	font-style: italic;
+}
 
 body {
 	background-color: #D3D3D3;
@@ -48,8 +52,8 @@ body {
   height: 100%;
 }
 
-.newState {
-	background-color: white;
+.red {
+	color: #ff0000;
 }
 
 .container {

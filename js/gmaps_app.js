@@ -86,6 +86,10 @@ function initMap() {
   document.getElementById('map-filter').addEventListener('click', function(){
       filterMarkers();
   });
+
+  document.getElementById('filter').addEventListener('keyup', function(e){
+        filterMarkers();
+  });
 }
 
 // Create an infoWindow to display the details of the marker
@@ -206,4 +210,9 @@ function getGMarker(gmarker){
       lng:gmarker.position.lng()
     }
   });
+}
+
+function gm_authFailure() {
+  alert('Unable to retrieve Google Maps Info, please try again later.');
+  $("#map").css("display", "none");
 }

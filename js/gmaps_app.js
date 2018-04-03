@@ -98,7 +98,8 @@ function populateInfoWindow(gmarker, infowindow) {
   var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search='
                 + gmarker.title + '&format=json&callback=wikiCallback';
   var wikiRequestTimeout = setTimeout(function(){
-      $wikiElem.text("failed to get wikipedia resources");
+    alert('Failed to retrieve Wikipedia Resources.');
+    $("#map").css("display", "none");
   }, 8000);
 
   $.ajax({
